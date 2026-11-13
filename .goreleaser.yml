@@ -1,0 +1,34 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+- binary: '{{ .ProjectName }}'
+  main: ./cmd/openrisk
+
+  goos:
+    - windows
+    - linux
+    - darwin
+  goarch:
+    - amd64
+    - 386
+    - arm
+    - arm64
+
+  ignore:
+    - goos: darwin
+      goarch: '386'
+    - goos: windows
+      goarch: 'arm'
+    - goos: windows
+      goarch: 'arm64'
+
+archives:
+- formats: [zip]
+  name_template: '{{ .ProjectName }}_{{ .Version }}_{{ if eq .Os "darwin" }}macOS{{ else }}{{ .Os }}{{ end }}_{{ .Arch }}{{ with .Arm }}v{{ . }}{{ end }}'
+
+checksum:
+  algorithm: sha256

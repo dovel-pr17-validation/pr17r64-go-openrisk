@@ -1,0 +1,20 @@
+name: 🙏🏻 Lint Test
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Lint Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: "Set up Go"
+        uses: projectdiscovery/actions/setup/go@v1
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: latest
+          args: --timeout 5m
+          working-directory: .
